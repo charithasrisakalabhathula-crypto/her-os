@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>My Life OS — Becoming My Best Self</title>
+  <meta name="description" content="My Life OS — a free personal lifestyle and habit tracker. Little habits. Consistent efforts. A better me.">
+  <meta name="theme-color" content="#F4EFE6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Life OS">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ NAVIGATION (sidebar on desktop, bottom bar on mobile) ============ -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-brand">
+      <span class="brand-mark" aria-hidden="true">🌿</span>
+      <div><strong>My Life OS</strong><small>Becoming my best self</small></div>
+    </div>
+    <button class="nav-btn active" data-view="today" aria-current="page"><span class="ni" aria-hidden="true">🏡</span><span class="nl">Today</span></button>
+    <button class="nav-btn" data-view="reports"><span class="ni" aria-hidden="true">📊</span><span class="nl">Reports</span></button>
+    <button class="nav-btn" data-view="calendar"><span class="ni" aria-hidden="true">🗓️</span><span class="nl">Calendar</span></button>
+    <button class="nav-btn" data-view="badges"><span class="ni" aria-hidden="true">🏅</span><span class="nl">Badges</span></button>
+    <button class="nav-btn" data-view="settings"><span class="ni" aria-hidden="true">⚙️</span><span class="nl">Settings</span></button>
+  </nav>
+
+  <main>
+    <div class="container">
+
+      <!-- ====================== TODAY ====================== -->
+      <section id="view-today" class="view active" aria-label="Today">
+
+        <header class="hero card" id="hero">
+          <div class="hero-text">
+            <div class="hero-top">
+              <p class="eyebrow" id="dateText">&nbsp;</p>
+              <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" title="Toggle dark / light mode">🌙</button>
+            </div>
+            <h1 class="app-title">My Life OS</h1>
+            <p class="subtitle">Little habits. Consistent efforts. A better me.</p>
+            <p class="greeting"><span id="greeting"></span><span class="dot" aria-hidden="true">•</span><span id="clock" aria-label="Current time"></span></p>
+            <blockquote class="quote" id="quote" role="button" tabindex="0" title="Tap for another quote"></blockquote>
+            <div class="chips-row">
+              <span class="pill" id="streakChip">🔥 0-day streak</span>
+              <span class="pill soft" id="weekChip">🌸 Weekly consistency 0%</span>
+            </div>
+          </div>
+          <div class="hero-ring">
+            <div class="big-ring">
+              <svg viewBox="0 0 36 36" class="ring big" aria-hidden="true">
+                <circle class="ring-bg" cx="18" cy="18" r="15.9155"/>
+                <circle class="ring-fg" id="bigRingFg" cx="18" cy="18" r="15.9155"/>
+              </svg>
+              <div class="big-ring-text"><strong id="bigRingPct">0%</strong><span>complete</span></div>
+            </div>
+            <p class="hero-msg" id="heroMsg"></p>
+          </div>
+        </header>
+
+        <div id="viewBanner" class="banner hidden" role="status">
+          <span id="viewBannerText"></span>
+          <button class="btn small" type="button" data-open-date="today">Back to today</button>
+        </div>
+
+        <div class="summary card" aria-label="Daily habit summary">
+          <div class="summary-head"><h2>Today's habits</h2><span class="muted" id="summaryCount"></span></div>
+          <div class="summary-chips" id="summary"></div>
+        </div>
+
+        <div class="grid" id="habitGrid">
+
+          <!-- WORKOUT -->
+          <article class="card habit" id="card-workout" data-cat="workout">
+            <div class="habit-head">
+              <div class="habit-title"><span class="habit-emoji" aria-hidden="true">🏋️</span><div><h3>Workout</h3><p class="target" id="wkTarget">Target: 45 min</p></div></div>
+              <div class="mini-ring" data-ring="workout"></div>
+            </div>
+            <div class="stat-line"><strong id="wkDone">0</strong><span id="wkOf">/ 45 min</span></div>
+            <div class="bar"><i></i></div>
+            <div class="timer">
+              <div class="timer-display" id="clk-workout" aria-live="off">00:00:00</div>
+              <div class="btn-row">
+                <button class="btn primary" type="button" data-timer-main="workout">▶ Start</button>
+                <button class="btn" type="button" data-timer-save="workout">✔ Save</button>
+                <button class="btn ghost" type="button" data-timer-reset="workout">↺ Reset</button>
+              </div>
+            </div>
+            <div class="manual">
+              <input type="number" id="in-workout" min="0" max="1440" inputmode="numeric" placeholder="Minutes" aria-label="Workout minutes">
+              <button class="btn" type="button" data-manual-add="workout">Add</button>
+              <button class="btn ghost" type="button" data-manual-set="workout" title="Replace today's total">Set total</button>
+            </div>
+          </article>
+
+          <!-- STUDY -->
+          <article class="card habit" id="card-study" data-cat="study">
+            <div class="habit-head">
+              <div class="habit-title"><span class="habit-emoji" aria-hidden="true">📚</span><div><h3>Study</h3><p class="target" id="stTarget">Target: 3h</p></div></div>
+              <div class="mini-ring" data-ring="study"></div>
+            </div>
+            <div class="stat-line"><strong id="stDone">0m</strong><span id="stOf">/ 3h</span></div>
+            <p class="sub" id="stRemain"></p>
+            <div class="bar"><i></i></div>
+            <div class="timer">
+              <div class="timer-display" id="clk-study">00:00:00</div>
+              <div class="btn-row">
+                <button class="btn primary" type="button" data-timer-main="study">▶ Start</button>
+                <button class="btn" type="button" data-timer-save="study">✔ Save session</button>
+                <button class="btn ghost" type="button" data-timer-reset="study">↺ Reset</button>
+              </div>
+            </div>
+            <div class="manual">
+              <input type="number" id="in-study" min="0" max="1440" inputmode="numeric" placeholder="Minutes" aria-label="Study minutes">
+              <button class="btn" type="button" data-manual-add="study">Add</button>
+              <button class="btn ghost" type="button" data-manual-set="study" title="Replace today's total">Set total</button>
+            </div>
+            <div class="chips" id="studySessions" aria-label="Study sessions"></div>
+          </article>
+
+          <!-- WALKING -->
+          <article class="card habit" id="card-steps" data-cat="steps">
+            <div class="habit-head">
+              <div class="habit-title"><span class="habit-emoji" aria-hidden="true">👟</span><div><h3>Walking</h3><p class="target" id="spTarget">Target: 10,000 steps</p></div></div>
+              <div class="mini-ring" data-ring="steps"></div>
+            </div>
+            <div class="stat-line"><strong id="spDone">0</strong><span id="spOf">/ 10,000 steps</span></div>
+            <p class="sub" id="spPct"></p>
+            <div class="bar"><i></i></div>
+            <div class="btn-row spaced">
+              <button class="btn" type="button" data-add-steps="500">+500</button>
+              <button class="btn" type="button" data-add-steps="1000">+1,000</button>
+            </div>
+            <div class="manual">
+              <input type="number" id="in-steps" min="0" max="200000" inputmode="numeric" placeholder="Steps" aria-label="Steps">
+              <button class="btn" type="button" data-manual-add="steps">Add</button>
+              <button class="btn ghost" type="button" data-manual-set="steps" title="Replace today's total">Set total</button>
+            </div>
+            <p class="hint">Steps are entered by hand — copy the number from your phone's health app or watch.</p>
+          </article>
+
+          <!-- WATER -->
+          <article class="card habit" id="card-water" data-cat="water">
+            <div class="habit-head">
+              <div class="habit-title"><span class="habit-emoji" aria-hidden="true">💧</span><div><h3>Water</h3><p class="target" id="wtTarget">Target: 3 L</p></div></div>
+              <div class="mini-ring" data-ring="water"></div>
+            </div>
+            <div class="water-row">
+              <div class="glass empty" aria-hidden="true"><div class="fill" id="glassFill"></div></div>
+              <div class="water-info">
+                <div class="stat-line"><strong id="wtDone">0 ml</strong><span id="wtOf">/ 3 L</span></div>
+                <p class="sub" id="wtRemain"></p>
+                <p class="hint tiny" id="wtLog"></p>
+              </div>
+            </div>
+            <div class="bar"><i></i></div>
+            <div class="btn-row spaced">
+              <button class="btn" type="button" data-add-water="150">+150 ml</button>
+              <button class="btn" type="button" data-add-water="250">+250 ml</button>
+              <button class="btn" type="button" data-add-water="500">+500 ml</button>
+            </div>
+            <div class="manual">
+              <input type="number" id="in-water" min="0" max="10000" inputmode="numeric" placeholder="ml" aria-label="Water in millilitres">
+              <button class="btn" type="button" data-manual-add="water">Add</button>
+              <button class="btn ghost" type="button" data-manual-set="water" title="Replace today's total">Set total</button>
+              <button class="btn ghost" type="button" id="waterUndo">↩ Undo</button>
+            </div>
+
+            <details class="reminder" id="reminderBox">
+              <summary>⏰ Water reminders <span class="pill tiny" id="remPill">Off</span></summary>
+              <div class="reminder-body">
+                <label class="switch-row"><input type="checkbox" id="remEnabled"><span>Enable water reminders</span></label>
+                <div class="field-grid">
+                  <label>Remind every
+                    <select id="remInterval">
+                      <option value="30">30 minutes</option>
+                      <option value="45">45 minutes</option>
+                      <option value="60">60 minutes</option>
+                      <option value="90">90 minutes</option>
+                    </select>
+                  </label>
+                  <label>Wake-up time <input type="time" id="remStart"></label>
+                  <label>Bedtime (silent after) <input type="time" id="remEnd"></label>
+                  <label>"I drank" button logs
+                    <select id="remGlass">
+                      <option value="150">150 ml</option>
+                      <option value="250">250 ml</option>
+                      <option value="500">500 ml</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="custom-times">
+                  <label for="remCustomInput">Extra reminder times (once a day)</label>
+                  <div class="inline">
+                    <input type="time" id="remCustomInput">
+                    <button class="btn" type="button" id="remCustomAdd">Add</button>
+                  </div>
+                  <div class="chips" id="remCustomList"></div>
+                </div>
+                <label class="switch-row"><input type="checkbox" id="remSound"><span>Play alarm sound</span></label>
+                <div class="btn-row">
+                  <button class="btn primary" type="button" id="remTest">🔔 Test alarm</button>
+                  <button class="btn" type="button" id="notifBtn">Allow notifications</button>
+                </div>
+                <p class="hint" id="notifStatus"></p>
+                <p class="hint" id="remNext"></p>
+                <p class="hint tiny">Reminders only fire while My Life OS is open in a tab or installed as an app (it can stay in the background). Browsers don't allow a website to wake itself up after it is fully closed, so keep the app open or installed for the most reliable alerts.</p>
+              </div>
+            </details>
+          </article>
+
+          <!-- SLEEP -->
+          <article class="card habit" id="card-sleep" data-cat="sleep">
+            <div class="habit-head">
+              <div class="habit-title"><span class="habit-emoji" aria-hidden="true">🌙</span><div><h3>Sleep</h3><p class="target" id="slTarget">Target: 7h</p></div></div>
+              <div class="mini-ring" data-ring="sleep"></div>
+            </div>
+            <div class="stat-line"><strong id="slDur">—</strong><span id="slOf">/ 7h goal</span></div>
+            <div class="bar"><i></i></div>
+            <div class="field-grid two">
+              <label>Bedtime (last night) <input type="time" id="bedTime"></label>
+              <label>Wake-up (this morning) <input type="time" id="wakeTime"></label>
+            </div>
+            <p class="hint">Crossing midnight is handled automatically (e.g. 23:30 → 07:00 = 7h 30m).</p>
+            <div class="mini-history" id="slHist" aria-label="Recent sleep"></div>
+          </article>
+
+          <!-- SKINCARE -->
+          <article class="card habit" id="card-skin" data-cat="skin">
+            <div class="habit-head">
+              <div class="habit-title"><span class="habit-emoji" aria-hidden="true">🧴</span><div><h3>Skincare</h3><p class="target" id="skTarget">Target: 30 min</p></div></div>
+              <div class="mini-ring" data-ring="skin"></div>
+            </div>
+            <div class="stat-line"><strong id="skDone">0</strong><span id="skOf">/ 30 min</span></div>
+            <div class="bar"><i></i></div>
+            <div class="stack">
+              <label class="check"><input type="checkbox" id="skAM"><span id="skAMLabel">☀️ Morning routine · 15 min</span></label>
+              <label class="check"><input type="checkbox" id="skPM"><span id="skPMLabel">🌙 Night routine · 15 min</span></label>
+            </div>
+            <div class="timer slim">
+              <div class="timer-display" id="clk-skin">00:00:00</div>
+              <div class="btn-row">
+                <select id="skTargetSel" aria-label="Which routine is this timer for?">
+                  <option value="am">For morning</option>
+                  <option value="pm">For night</option>
+                </select>
+                <button class="btn primary" type="button" data-timer-main="skin">▶ Start</button>
+                <button class="btn" type="button" data-timer-save="skin">✔ Save</button>
+                <button class="btn ghost" type="button" data-timer-reset="skin">↺</button>
+              </div>
+            </div>
+            <p class="hint">Optional timer: saving it records the real minutes and ticks that routine.</p>
+          </article>
+
+          <!-- FOOD -->
+          <article class="card habit" id="card-food" data-cat="food">
+            <div class="habit-head">
+              <div class="habit-title"><span class="habit-emoji" aria-hidden="true">🥗</span><div><h3>Food</h3><p class="target">Target: 2 meals · no calorie counting</p></div></div>
+              <div class="mini-ring" data-ring="food"></div>
+            </div>
+            <div class="stat-line"><strong id="fdStatus">0 of 2 meals</strong></div>
+            <div class="bar"><i></i></div>
+            <div class="meal">
+              <label class="check"><input type="checkbox" id="m1Done"><span>Meal 1</span></label>
+              <input type="text" id="m1Name" placeholder="What did you eat?" maxlength="120" aria-label="Meal 1 name">
+              <input type="text" id="m1Note" placeholder="Notes (optional)" maxlength="240" aria-label="Meal 1 notes">
+            </div>
+            <div class="meal">
+              <label class="check"><input type="checkbox" id="m2Done"><span>Meal 2</span></label>
+              <input type="text" id="m2Name" placeholder="What did you eat?" maxlength="120" aria-label="Meal 2 name">
+              <input type="text" id="m2Note" placeholder="Notes (optional)" maxlength="240" aria-label="Meal 2 notes">
+            </div>
+          </article>
+
+          <!-- CONTENT CREATION -->
+          <article class="card habit" id="card-content" data-cat="content">
+            <div class="habit-head">
+              <div class="habit-title"><span class="habit-emoji" aria-hidden="true">🎬</span><div><h3>Content creation</h3><p class="target">Shooting + editing</p></div></div>
+              <div class="mini-ring" data-ring="content"></div>
+            </div>
+            <div class="stat-line"><strong id="ctStatus">0 of 2 done</strong></div>
+            <div class="bar"><i></i></div>
+            <div class="stack two-col">
+              <label class="check"><input type="checkbox" id="ctShoot"><span>🎥 Shooting</span></label>
+              <label class="check"><input type="checkbox" id="ctEdit"><span>✂️ Editing</span></label>
+            </div>
+            <input type="text" id="ctTitle" placeholder="Content title" maxlength="140" aria-label="Content title">
+            <div class="field-grid two">
+              <label>Platform
+                <select id="ctPlatform">
+                  <option>Instagram</option>
+                  <option>YouTube</option>
+                  <option>Both</option>
+                </select>
+              </label>
+              <label>Time spent (min) <input type="number" id="ctMin" min="0" max="1440" inputmode="numeric" placeholder="0"></label>
+            </div>
+            <textarea id="ctNote" rows="3" placeholder="Notes or ideas…" maxlength="1000" aria-label="Content notes or ideas"></textarea>
+            <details class="history">
+              <summary>🗂️ Content history</summary>
+              <div id="ctHistory" class="hist-list"></div>
+            </details>
+          </article>
+        </div>
+
+        <!-- REFLECTION -->
+        <section class="card reflection" id="card-reflection">
+          <div class="habit-head">
+            <div class="habit-title"><span class="habit-emoji" aria-hidden="true">📔</span><div><h3>Today I Showed Up</h3><p class="target" id="refSummary"></p></div></div>
+            <span class="saved" id="refSaved" aria-live="polite"></span>
+          </div>
+          <textarea id="reflection" rows="5" placeholder="What went well today? What am I proud of? What do I want to remember?" aria-label="Daily reflection"></textarea>
+        </section>
+
+        <div class="footer-actions">
+          <button class="btn ghost danger" type="button" id="resetDay">Reset today's progress</button>
+        </div>
+      </section>
+
+      <!-- ====================== REPORTS ====================== -->
+      <section id="view-reports" class="view" aria-label="Reports">
+        <h2 class="page-title">Reports</h2>
+        <div class="tabs" role="tablist" aria-label="Report range">
+          <button class="tab active" type="button" role="tab" data-rep-tab="daily" aria-selected="true">Daily</button>
+          <button class="tab" type="button" role="tab" data-rep-tab="weekly" aria-selected="false">Weekly</button>
+          <button class="tab" type="button" role="tab" data-rep-tab="monthly" aria-selected="false">Monthly</button>
+        </div>
+        <div id="reportBody"></div>
+      </section>
+
+      <!-- ====================== CALENDAR ====================== -->
+      <section id="view-calendar" class="view" aria-label="Calendar">
+        <h2 class="page-title">Calendar &amp; history</h2>
+        <div class="card cal-card">
+          <div class="cal-head">
+            <button class="icon-btn" type="button" data-cal-nav="-1" aria-label="Previous month">‹</button>
+            <h3 id="calTitle"></h3>
+            <button class="icon-btn" type="button" data-cal-nav="1" aria-label="Next month" id="calNext">›</button>
+          </div>
+          <div class="cal-week" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+          <div class="cal-grid" id="calGrid"></div>
+          <p class="hint center">The ring around each date shows how much of that day you completed. Tap a date to review it.</p>
+        </div>
+        <div class="card" id="calDetail"></div>
+      </section>
+
+      <!-- ====================== BADGES ====================== -->
+      <section id="view-badges" class="view" aria-label="Badges">
+        <h2 class="page-title">Streaks &amp; badges</h2>
+        <div class="stat-tiles" id="badgeStats"></div>
+        <div class="badge-grid" id="badgeGrid"></div>
+      </section>
+
+      <!-- ====================== SETTINGS ====================== -->
+      <section id="view-settings" class="view" aria-label="Settings">
+        <h2 class="page-title">Settings</h2>
+
+        <div class="card settings-card">
+          <h3>🎯 Daily targets</h3>
+          <div class="field-grid">
+            <label>Workout (minutes) <input type="number" id="set-workout" min="1" max="1440" inputmode="numeric"></label>
+            <label>Study (minutes) <input type="number" id="set-study" min="1" max="1440" inputmode="numeric"></label>
+            <label>Walking (steps) <input type="number" id="set-steps" min="100" max="200000" inputmode="numeric"></label>
+            <label>Water (ml) <input type="number" id="set-water" min="250" max="10000" step="50" inputmode="numeric"></label>
+            <label>Sleep (hours) <input type="number" id="set-sleep" min="1" max="16" step="0.5" inputmode="decimal"></label>
+            <label>Morning skincare (min) <input type="number" id="set-skinAM" min="1" max="240" inputmode="numeric"></label>
+            <label>Night skincare (min) <input type="number" id="set-skinPM" min="1" max="240" inputmode="numeric"></label>
+            <label>Streak counts when day ≥ (%) <input type="number" id="set-streak" min="10" max="100" step="5" inputmode="numeric"></label>
+          </div>
+          <p class="hint">Changing a target also changes the percentages shown for past days, because progress is calculated from the saved amounts.</p>
+          <div class="btn-row"><button class="btn ghost" type="button" id="resetTargets">Restore default targets</button></div>
+        </div>
+
+        <div class="card settings-card">
+          <h3>🎨 Appearance</h3>
+          <label class="inline-label">Theme
+            <select id="set-theme">
+              <option value="system">Match my device</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="card settings-card">
+          <h3>💾 Backup &amp; restore</h3>
+          <p class="hint">Everything is stored only in this browser. Download a backup regularly (and before clearing browser data or changing phone).</p>
+          <div class="btn-row">
+            <button class="btn primary" type="button" id="exportJson">⬇ Backup (JSON)</button>
+            <button class="btn" type="button" id="exportCsv">⬇ Export CSV</button>
+            <button class="btn" type="button" id="importBtn">⬆ Restore from JSON</button>
+            <input type="file" id="importFile" accept="application/json,.json" hidden>
+          </div>
+          <p class="hint" id="storageInfo"></p>
+        </div>
+
+        <div class="card settings-card" id="installCard">
+          <h3>📲 Install as an app</h3>
+          <p class="hint" id="installHint">Open this page in Chrome, Edge or Safari and use the browser menu → “Install app” / “Add to Home Screen”. Installed apps handle reminders and offline use best.</p>
+          <div class="btn-row"><button class="btn primary hidden" type="button" id="installBtn">Install My Life OS</button></div>
+        </div>
+
+        <div class="card settings-card danger-zone">
+          <h3>⚠️ Danger zone</h3>
+          <div class="btn-row">
+            <button class="btn ghost danger" type="button" id="resetToday">Reset today's progress</button>
+            <button class="btn ghost danger" type="button" id="eraseAll">Erase all data</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- Water alarm modal -->
+<div id="alarm" class="modal hidden" role="alertdialog" aria-modal="true" aria-labelledby="alarmTitle" aria-describedby="alarmSub">
+  <div class="modal-card">
+    <div class="drop" aria-hidden="true">💧</div>
+    <h2 id="alarmTitle">Hey! Time to hydrate. Drink some water 💧</h2>
+    <p id="alarmSub" class="muted"></p>
+    <div class="btn-col">
+      <button class="btn primary" type="button" id="alarmDrank">💧 I drank water</button>
+      <button class="btn" type="button" id="alarmSnooze">⏰ Snooze 10 minutes</button>
+      <button class="btn ghost" type="button" id="alarmDismiss">Dismiss</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="confetti" aria-hidden="true"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
